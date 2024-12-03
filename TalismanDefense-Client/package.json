@@ -1,0 +1,25 @@
+{
+  "name": "TalismanDefense-Client",
+  "uuid": "1ed22597-1d0e-45f8-bb92-af3ac062b2ca",
+  "creator": {
+    "version": "3.8.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^20.12.7",
+    "@typescript-eslint/eslint-plugin": "5.62.0",
+    "@typescript-eslint/parser": "^6.7.4",
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-prettier": "^5.0.1",
+    "lerna": "^8.0.1",
+    "prettier": "^3.0.3"
+  },
+  "dependencies": {
+    "tsrpc-browser": "^3.4.16",
+    "immer": "^10.1.1",
+    "tsrpc-miniapp": "^3.4.16"
+  }
+}
