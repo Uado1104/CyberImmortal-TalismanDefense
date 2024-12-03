@@ -1,4 +1,3 @@
-import { Logger } from '../debugers/log';
 import { ITicker } from './ITicker';
 import { TickSystem } from './TickerSystem';
 
