@@ -178,7 +178,7 @@
     "_priority": 0,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 360,
+    "_orthoHeight": 439.5959595959596,
     "_near": 0,
     "_far": 2000,
     "_color": {
@@ -212,7 +212,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "20241029-223352",
+    "_name": "map1",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -256,7 +256,7 @@
       "y": 0,
       "z": 0
     },
-    "_id": "42M7U/6WhPr4b1jf6kgfwP"
+    "_id": "6cDLqlgPhHOYx0IqNPo/5E"
   },
   {
     "__type__": "cc.UITransform",
@@ -270,15 +270,15 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 512,
-      "height": 512
+      "width": 960,
+      "height": 640
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
       "y": 0.5
     },
-    "_id": "ccVCIZaWdO7qA0L4r0gRk4"
+    "_id": "b9i3il711BPosM9hpt1dhQ"
   },
   {
     "__type__": "cc.Sprite",
@@ -301,12 +301,12 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "4081075e-4b3e-47db-b066-706d6313655c@f9941",
+      "__uuid__": "263279ae-b27b-4617-aa02-97a26b51277d@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
     "_fillType": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillCenter": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -317,7 +317,7 @@
     "_isTrimmedMode": true,
     "_useGrayscale": false,
     "_atlas": null,
-    "_id": "00jkDT8MNGN6+F9AEkclt5"
+    "_id": "66rhdpPJpGe5mvDppYwj4P"
   },
   {
     "__type__": "cc.UITransform",
