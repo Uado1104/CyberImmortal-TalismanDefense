@@ -21,23 +21,23 @@ export class GameSessionController extends GameControllerBase {
   protected onTick(dt: number): void {}
 
   protected onStart(): void {
-    GameStrategyManager.strategy.event.on('onRoundStart', this.onRoundStart);
-    GameStrategyManager.strategy.event.on('onRoundEnd', this.onRoundEnd.bind(this));
-    GameStrategyManager.strategy.event.on('onWaveStart', this.onWaveStart.bind(this));
-    GameStrategyManager.strategy.event.on('onWaveEnd', this.onWaveEnd.bind(this));
-    GameStrategyManager.strategy.event.on('onDrawCard', this.onDrawCard.bind(this));
-    GameStrategyManager.strategy.event.on('onEndDrawCard', this.onEndDrawCard.bind(this));
+    GameStrategyManager.event.on('onRoundStart', this.onRoundStart);
+    GameStrategyManager.event.on('onRoundEnd', this.onRoundEnd.bind(this));
+    GameStrategyManager.event.on('onWaveStart', this.onWaveStart.bind(this));
+    GameStrategyManager.event.on('onWaveEnd', this.onWaveEnd.bind(this));
+    GameStrategyManager.event.on('onDrawCard', this.onDrawCard.bind(this));
+    GameStrategyManager.event.on('onEndDrawCard', this.onEndDrawCard.bind(this));
 
     GameStrategyManager.strategy.excute('startGame');
   }
 
   protected onEnd(): void {
-    GameStrategyManager.strategy.event.remove('onRoundStart', this.onRoundStart.bind(this));
-    GameStrategyManager.strategy.event.remove('onRoundEnd', this.onRoundEnd.bind(this));
-    GameStrategyManager.strategy.event.remove('onWaveStart', this.onWaveStart.bind(this));
-    GameStrategyManager.strategy.event.remove('onWaveEnd', this.onWaveEnd.bind(this));
-    GameStrategyManager.strategy.event.remove('onDrawCard', this.onDrawCard.bind(this));
-    GameStrategyManager.strategy.event.remove('onEndDrawCard', this.onEndDrawCard.bind(this));
+    GameStrategyManager.event.remove('onRoundStart', this.onRoundStart.bind(this));
+    GameStrategyManager.event.remove('onRoundEnd', this.onRoundEnd.bind(this));
+    GameStrategyManager.event.remove('onWaveStart', this.onWaveStart.bind(this));
+    GameStrategyManager.event.remove('onWaveEnd', this.onWaveEnd.bind(this));
+    GameStrategyManager.event.remove('onDrawCard', this.onDrawCard.bind(this));
+    GameStrategyManager.event.remove('onEndDrawCard', this.onEndDrawCard.bind(this));
   }
 
   killEnemy() {

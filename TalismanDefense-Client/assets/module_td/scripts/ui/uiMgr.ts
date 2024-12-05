@@ -4,6 +4,7 @@ import { UIController } from './UIController';
 import { ResourceManager } from '../../../Core/resource/resourceSystem';
 import { ITicker } from '../../../Core/ticker/ITicker';
 import { TickSystem } from '../../../Core/ticker/TickerSystem';
+import { Logger } from '../../../Core/debugers/log';
 
 /**
  * 注册ui的controller以及对应的prefab位置，controller主要用于处理ui的逻辑，prefab主要用于ui的显示

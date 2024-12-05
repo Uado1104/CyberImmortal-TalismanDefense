@@ -7,13 +7,12 @@ import { genDefaultGameRoomSim } from './gameRoomSimInterface';
 import { GameRoomSimModel } from './gameRoomSimModel';
 
 const gameRoomSimulatioEventDefine = {
-  startRound: (round: number) => {},
-  playerRoundOver: (playerId: number) => {},
-  endRound: () => {},
+  onRoundStart: (round: number) => {},
+  onRoundEnd: (round: number) => {},
+  onWaveStart: (wave: number) => {},
+  onWaveEnd: (wave: number) => {},
   startDrawCard: () => {},
   endDrawCard: () => {},
-  startWave: () => {},
-  endWave: () => {},
   sessionOver: () => {},
   enemyChanged: (enemyCount: number) => {},
 };
@@ -74,7 +73,7 @@ export class GameRoomSimulationManager {
       }
 
       GameRoomSimulationManager.isBattle = false;
-      GameRoomSimulationManager.event.emit('endRound');
+      GameRoomSimulationManager.event.emit('onRoundEnd', GameRoomSimulationManager.model.data.session.currentRound);
       GameRoomSimulationManager.moveToNextRound();
     },
   };
@@ -87,9 +86,9 @@ export class GameRoomSimulationManager {
     }
     GameRoomSimulationManager.model.enemyAliveCount += 3;
     GameRoomSimulationManager.model.waveLeft--;
-    GameRoomSimulationManager.event.emit('startWave');
+    GameRoomSimulationManager.event.emit('onWaveStart', GameRoomSimulationManager.model.waveLeft);
     registerTimeoutTicker(() => {
-      GameRoomSimulationManager.event.emit('endWave');
+      GameRoomSimulationManager.event.emit('onWaveEnd', GameRoomSimulationManager.model.waveLeft);
       GameRoomSimulationManager.moveToNextWave();
     }, 5);
     return true;
@@ -109,7 +108,7 @@ export class GameRoomSimulationManager {
     GameRoomSimulationManager.model.roundLeft--;
     GameRoomSimulationManager.model.data.session.currentRound++;
     Logger.log('GameRoomSimulationManager', `Round ${GameRoomSimulationManager.model.data.session.currentRound} start`);
-    GameRoomSimulationManager.event.emit('startRound', GameRoomSimulationManager.model.data.session.currentRound);
+    GameRoomSimulationManager.event.emit('onRoundStart', GameRoomSimulationManager.model.data.session.currentRound);
     GameRoomSimulationManager.event.emit('startDrawCard');
 
     registerTimeoutTicker(() => {

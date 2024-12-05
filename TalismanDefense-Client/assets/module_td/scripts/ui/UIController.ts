@@ -1,6 +1,7 @@
 import { Prefab, isValid, Node, Component } from 'cc';
 import { uiEventsDefine } from './uiDefine';
 import { EventDispatcher } from '../../../Core/events/eventSystem';
+import { Logger } from '../../../Core/debugers/log';
 
 /**
  * @en base class of UI Panel
@@ -35,8 +36,8 @@ export class UIController {
 
   private _instId = 0;
   private _prefab: string | Prefab;
-  private _layer: number;
-  private _layoutCls: typeof Component;
+  protected _layer: number;
+  protected _layoutCls: typeof Component;
   protected _layout: Component;
   protected node: Node;
   protected _destroyed = false;
@@ -69,7 +70,7 @@ export class UIController {
    * @en layer of this ui panel.
    * @zh 本UI所在的UI层级
    *  */
-  get layer(): number {
+  get layerNum(): number {
     return this._layer;
   }
 
@@ -84,11 +85,10 @@ export class UIController {
 
   //setup this ui,called by UIMgr.
   setup(node: Node) {
+    Logger.log('UIController setup', `setup ${node}`);
     this.node = node;
 
-    if (!this._layout) {
-      this._layout = this.node.getComponent(this._layoutCls);
-    }
+    this._layout = this.node.getComponent(this._layoutCls);
 
     //notify sub class to handle something.
     //节点创建完毕，调用子类的处理函数。

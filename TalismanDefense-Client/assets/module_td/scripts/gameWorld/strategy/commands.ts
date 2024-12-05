@@ -5,9 +5,9 @@ import { TickSystem } from '../../../../Core/ticker/TickerSystem';
 const gameStrategyEventDefine = {
   startGame: () => {},
   onRoundStart: (round: number) => {},
-  onRoundEnd: () => {},
-  onWaveStart: () => {},
-  onWaveEnd: () => {},
+  onRoundEnd: (round: number) => {},
+  onWaveStart: (wave: number) => {},
+  onWaveEnd: (wave: number) => {},
   onDrawCard: () => {},
   onEndDrawCard: () => {},
   killEnemy: () => {},

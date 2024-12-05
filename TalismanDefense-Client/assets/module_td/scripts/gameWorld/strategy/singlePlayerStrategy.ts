@@ -26,16 +26,16 @@ export class SinglePlayerStrategy extends IGamePlayStrategyBase {
     this.event.emit('onRoundStart', round);
   }
 
-  private onEndRound() {
-    this.event.emit('onRoundEnd');
+  private onEndRound(round: number) {
+    this.event.emit('onRoundEnd', round);
   }
 
-  private onWaveStart() {
-    this.event.emit('onWaveStart');
+  private onWaveStart(wave: number) {
+    this.event.emit('onWaveStart', wave);
   }
 
-  private onWaveEnd() {
-    this.event.emit('onWaveEnd');
+  private onWaveEnd(wave: number) {
+    this.event.emit('onWaveEnd', wave);
   }
 
   private onDrawCard() {
@@ -51,10 +51,10 @@ export class SinglePlayerStrategy extends IGamePlayStrategyBase {
   }
 
   private onStartGame() {
-    GameRoomSimulationManager.event.on('startRound', this.onRoundStart.bind(this));
-    GameRoomSimulationManager.event.on('endRound', this.onEndRound.bind(this));
-    GameRoomSimulationManager.event.on('startWave', this.onWaveStart.bind(this));
-    GameRoomSimulationManager.event.on('endWave', this.onWaveEnd.bind(this));
+    GameRoomSimulationManager.event.on('onRoundStart', this.onRoundStart.bind(this));
+    GameRoomSimulationManager.event.on('onRoundEnd', this.onEndRound.bind(this));
+    GameRoomSimulationManager.event.on('onWaveStart', this.onWaveStart.bind(this));
+    GameRoomSimulationManager.event.on('onWaveEnd', this.onWaveEnd.bind(this));
     GameRoomSimulationManager.event.on('startDrawCard', this.onDrawCard.bind(this));
     GameRoomSimulationManager.event.on('endDrawCard', this.onEndDrawCard.bind(this));
     GameRoomSimulationManager.event.on('enemyChanged', this.onDataChanged.bind(this));

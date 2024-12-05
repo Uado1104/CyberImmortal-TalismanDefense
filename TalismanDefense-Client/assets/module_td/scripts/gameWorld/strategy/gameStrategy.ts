@@ -22,11 +22,9 @@ export class GameStrategyManager {
     this.myGameStrategy = undefined;
   }
 
-  private static onRoundStart() {}
-
-  private static onWaveStart() {}
-
-  private static onWaveEnd() {}
+  static get event() {
+    return this.strategy.event;
+  }
 
   static excute<T extends TCommand>(command: T, ...params: TEventHandleParams<TStrategyDefine[T]>) {
     this.strategy.excute(command, ...params);

@@ -1,13 +1,13 @@
 import { EventHandler } from 'cc';
-import { GameProcessController } from '../gameWorld/controller/gameProcessController';
-import { UIController } from './UIController';
+import { GameProcessController } from '../../scripts/gameWorld/controller/gameProcessController';
+import { UIController } from '../../scripts/ui/UIController';
 import { Logger } from '../../../Core/debugers/log';
 
 export class UiTestController extends UIController {
   private onEnenyNumberChanged(count: number) {}
 
   protected onCreated(): void {
-    UIController.event.on('killEnemy', this.onKillEnemy);
+    Logger.log('UiTestController', 'oncreated');
   }
 
   private onKillEnemy() {

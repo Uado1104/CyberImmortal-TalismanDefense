@@ -1,9 +1,10 @@
+import { Logger } from '../debugers/log';
 import { EventDispatcher } from '../events/eventSystem';
 
-type Observer = (newValue: any, oldValue: any, path: string) => void;
+export type ModelObserver = (newValue: any, oldValue: any, path: string) => void;
 
 const eventDefine = {
-  onDataChanged: ((newValue: any, oldValue: any, path: string) => {}) as Observer,
+  onDataChanged: ((newValue: any, oldValue: any, path: string) => {}) as ModelObserver,
 };
 
 function combinePath(basePath: string, key: string): string {
@@ -11,31 +12,44 @@ function combinePath(basePath: string, key: string): string {
 }
 
 export class ObservableModel<T extends object> {
-  private observers: Map<string, Set<Observer>> = new Map();
+  private observers: Map<ModelObserver, Set<keyof T>> = new Map();
+
+  private observedKeyCountMap: Map<string, number> = new Map();
 
   private event = new EventDispatcher<typeof eventDefine>();
 
   constructor(private model: T) {}
 
   // 注册观察者
-  addObserver(path: string, observer: Observer): void {
-    let keyObservers = this.observers.get(path);
+  addObserver<K extends keyof T>(path: K, observer: ModelObserver): void {
+    let keyObservers = this.observers.get(observer);
     if (!keyObservers) {
       keyObservers = new Set();
-      this.observers.set(path, keyObservers);
+      this.observers.set(observer, keyObservers);
+      this.event.on('onDataChanged', observer);
     }
-    keyObservers.add(observer);
-    this.event.on('onDataChanged', observer);
+    keyObservers.add(path);
+
+    const count = this.observedKeyCountMap.get(path as string) || 0;
+    this.observedKeyCountMap.set(path as string, count + 1);
   }
 
   // 移除观察者（可选）
-  removeObserver(path: string, observer: Observer): void {
-    const keyObservers = this.observers.get(path);
-    if (!keyObservers || !keyObservers.has(observer)) {
+  removeObserver<K extends keyof T>(path: K, observer: ModelObserver): void {
+    const keyObservers = this.observers.get(observer);
+    if (!keyObservers || !keyObservers.has(path)) {
       return;
     }
-    this.event.remove('onDataChanged', observer);
-    keyObservers.delete(observer);
+    keyObservers.delete(path);
+    if (keyObservers.size === 0) {
+      this.event.remove('onDataChanged', observer);
+    }
+    const count = this.observedKeyCountMap.get(path as string) || 0;
+    if (count === 1) {
+      this.observedKeyCountMap.delete(path as string);
+    } else {
+      this.observedKeyCountMap.set(path as string, count - 1);
+    }
   }
 
   // 代理模型
@@ -60,11 +74,10 @@ export class ObservableModel<T extends object> {
         target[key] = value;
 
         // 通知观察者
-        const keyObservers = this.observers.get(path);
-        if (keyObservers) {
+        Logger.log('ObservableModel', `onDataChanged: ${path}`);
+        if (this.observedKeyCountMap.get(path) > 0) {
           this.event.emit('onDataChanged', value, oldValue, path);
         }
-
         // 如果新值是对象，递归代理
         if (value && typeof value === 'object') {
           target[key] = this.createProxy(value, path);
