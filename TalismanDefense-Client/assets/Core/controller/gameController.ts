@@ -21,11 +21,11 @@ export abstract class GameControllerBase implements IGameController {
 
   private myIsStarted = false;
 
-  start() {
+  async start() {
     if (this.myIsStarted) {
       return;
     }
-    this.onStart();
+    await this.onStart();
     this.myIsStarted = true;
   }
 
@@ -46,13 +46,13 @@ export abstract class GameControllerBase implements IGameController {
     this.onPause();
   }
 
-  end() {
+  async end() {
     if (!this.myIsStarted) {
       return;
     }
     this.myIsStarted = false;
     this.childControllers?.forEach((e) => e.end());
-    this.onEnd();
+    await this.onEnd();
   }
 
   tick(dt: number) {
@@ -63,13 +63,13 @@ export abstract class GameControllerBase implements IGameController {
     this.childControllers?.forEach((e) => e.tick(dt));
   }
 
-  protected abstract onStart(): void;
+  protected abstract onStart(): Promise<void>;
 
-  protected abstract onPause(): void;
+  protected abstract onEnd(): Promise<void>;
 
-  protected abstract onResume(): void;
+  protected abstract onPause(): Promise<void>;
 
-  protected abstract onEnd(): void;
+  protected abstract onResume(): Promise<void>;
 
   protected abstract onTick(dt: number): void;
 }

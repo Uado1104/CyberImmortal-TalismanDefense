@@ -15,8 +15,8 @@ export class game extends Component {
     GameStrategyManager.init();
     GamePlayStateManager.init();
     // 开始游戏
-    GameProcessController.start();
     await this.showTestUI();
+    GameProcessController.start();
   }
 
   update(deltaTime: number) {
@@ -32,6 +32,5 @@ export class game extends Component {
     if (PREVIEW || TEST || DEBUG) {
       await UIMgr.instance.showUI('test');
     }
-    await UIMgr.instance.showUI('gameProgress');
   }
 }

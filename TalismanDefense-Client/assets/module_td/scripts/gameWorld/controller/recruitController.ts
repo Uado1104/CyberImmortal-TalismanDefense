@@ -2,14 +2,12 @@ import { GameControllerBase } from '../../../../Core/controller/gameController';
 
 export class GameRecruitController extends GameControllerBase {
   readonly key = 'RecruitController';
+  protected async onStart(): Promise<void> {}
 
-  protected onStart(): void {}
+  protected async onPause(): Promise<void> {}
 
-  protected onPause(): void {}
+  protected async onResume(): Promise<void> {}
 
-  protected onResume(): void {}
-
-  protected onEnd(): void {}
-
+  protected async onEnd(): Promise<void> {}
   protected onTick(dt: number): void {}
 }

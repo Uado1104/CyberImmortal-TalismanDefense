@@ -3,13 +3,13 @@ import { GameControllerBase } from '../../../../Core/controller/gameController';
 export class BattleWaveController extends GameControllerBase {
   readonly key = 'waveController';
 
-  protected onStart(): void {}
+  protected async onStart(): Promise<void> {}
 
-  protected onPause(): void {}
+  protected async onPause(): Promise<void> {}
 
-  protected onResume(): void {}
+  protected async onResume(): Promise<void> {}
 
-  protected onEnd(): void {}
+  protected async onEnd(): Promise<void> {}
 
   protected onTick(dt: number): void {}
 }

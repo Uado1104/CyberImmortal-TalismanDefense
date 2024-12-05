@@ -34,6 +34,10 @@ export class GameRoomSimulationManager {
 
   static killEnemy() {
     Logger.log('GameRoomSimulationManager', ` killEnemy ${GameRoomSimulationManager.model.enemyAliveCount}`);
+    if (GameRoomSimulationManager.model.enemyAliveCount <= 0) {
+      return;
+    }
+
     GameRoomSimulationManager.model.enemyAliveCount--;
     this.event.emit('enemyChanged', GameRoomSimulationManager.model.enemyAliveCount);
   }
@@ -85,6 +89,8 @@ export class GameRoomSimulationManager {
       return false;
     }
     GameRoomSimulationManager.model.enemyAliveCount += 3;
+    this.event.emit('enemyChanged', GameRoomSimulationManager.model.enemyAliveCount);
+
     GameRoomSimulationManager.model.waveLeft--;
     GameRoomSimulationManager.event.emit('onWaveStart', GameRoomSimulationManager.model.waveLeft);
     registerTimeoutTicker(() => {

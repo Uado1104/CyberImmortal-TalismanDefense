@@ -10,7 +10,7 @@ export class GameProcessController {
     Tick: GameProcessController.gameSessionController.tick,
   };
 
-  static start() {
+  static async start() {
     GamePlayStateManager.event.on('pause', GameProcessController.onPause);
     GamePlayStateManager.event.on('resume', GameProcessController.onResume);
 
@@ -32,9 +32,5 @@ export class GameProcessController {
     GamePlayStateManager.event.remove('resume', GameProcessController.onResume);
     TickSystem.RemoveTicker(GameProcessController.ticker);
     GameStrategyManager.destroy();
-  }
-
-  static killEnemy() {
-    GameProcessController.gameSessionController.killEnemy();
   }
 }
