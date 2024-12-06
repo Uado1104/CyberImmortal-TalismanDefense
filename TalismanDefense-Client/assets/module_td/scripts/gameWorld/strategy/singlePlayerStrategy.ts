@@ -46,9 +46,7 @@ export class SinglePlayerStrategy extends IGamePlayStrategyBase {
     this.event.emit('onEndDrawCard');
   }
 
-  private onDataChanged(data: number) {
-    GameModel.data.proxy.EnemyAliveCount = data;
-  }
+  private onDataChanged(data: number) {}
 
   private onStartGame() {
     GameRoomSimulationManager.event.on('onRoundStart', this.onRoundStart.bind(this));
