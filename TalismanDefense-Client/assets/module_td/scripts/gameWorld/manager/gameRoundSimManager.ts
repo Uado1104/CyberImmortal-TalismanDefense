@@ -3,8 +3,8 @@ import { EventDispatcher } from '../../../../Core/events/eventSystem';
 import { ITicker } from '../../../../Core/ticker/ITicker';
 import { TickSystem } from '../../../../Core/ticker/TickerSystem';
 import { registerTimeoutTicker } from '../../../../Core/ticker/TickerUtils';
-import { genDefaultGameRoomSim } from './gameRoomSimInterface';
-import { GameRoomSimModel } from './gameRoomSimModel';
+import { genDefaultGameRoomSim } from '../../modules/gameRoomSimulation/gameRoomSimInterface';
+import { GameRoomSimModel } from '../../modules/gameRoomSimulation/gameRoomSimModel';
 
 const gameRoomSimulatioEventDefine = {
   onRoundStart: (round: number) => {},
@@ -14,7 +14,6 @@ const gameRoomSimulatioEventDefine = {
   startDrawCard: () => {},
   endDrawCard: () => {},
   sessionOver: () => {},
-  enemyChanged: (enemyCount: number) => {},
 };
 
 export class GameRoomSimulationManager {

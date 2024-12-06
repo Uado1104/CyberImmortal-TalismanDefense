@@ -12,7 +12,7 @@ function combinePath(basePath: string, key: string): string {
 }
 
 export class ObservableModel<T extends object> {
-  private observers: Map<ModelObserver, Set<keyof T>> = new Map();
+  private observers: Map<ModelObserver, Set<string>> = new Map();
 
   private observedKeyCountMap: Map<string, number> = new Map();
 
@@ -21,7 +21,7 @@ export class ObservableModel<T extends object> {
   constructor(private model: T) {}
 
   // 注册观察者
-  addObserver<K extends keyof T>(path: K, observer: ModelObserver): void {
+  addObserver(path: string, observer: ModelObserver): void {
     let keyObservers = this.observers.get(observer);
     if (!keyObservers) {
       keyObservers = new Set();
@@ -35,7 +35,7 @@ export class ObservableModel<T extends object> {
   }
 
   // 移除观察者（可选）
-  removeObserver<K extends keyof T>(path: K, observer: ModelObserver): void {
+  removeObserver(path: string, observer: ModelObserver): void {
     const keyObservers = this.observers.get(observer);
     if (!keyObservers || !keyObservers.has(path)) {
       return;

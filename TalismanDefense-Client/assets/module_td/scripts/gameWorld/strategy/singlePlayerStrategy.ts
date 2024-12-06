@@ -1,6 +1,6 @@
 import { Logger } from '../../../../Core/debugers/log';
 import { TEventHandleParams } from '../../../../Core/events/eventSystem';
-import { GameRoomSimulationManager } from '../../modules/gameRoomSimulation/gameRoomSimManager';
+import { GameRoomSimulationManager } from '../manager/gameRoundSimManager';
 import { GameModel } from '../model/gameModel';
 import { IGamePlayStrategyBase, TCommand } from './commands';
 
