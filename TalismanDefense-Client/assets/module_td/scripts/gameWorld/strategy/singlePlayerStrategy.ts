@@ -1,7 +1,6 @@
 import { Logger } from '../../../../Core/debugers/log';
 import { TEventHandleParams } from '../../../../Core/events/eventSystem';
-import { GameRoomSimulationManager } from '../manager/gameRoundSimManager';
-import { GameModel } from '../model/gameModel';
+import { GameRoomSimulation } from '../../modules/gameRoomSimulation/gameRoundSimManager';
 import { IGamePlayStrategyBase, TCommand } from './commands';
 
 export class SinglePlayerStrategy extends IGamePlayStrategyBase {
@@ -10,11 +9,11 @@ export class SinglePlayerStrategy extends IGamePlayStrategyBase {
     switch (command) {
       case 'startGame':
         Logger.log('SinglePlayerStrategy', 'startGame');
-        this.onStartGame();
+        this.execStartGame();
         break;
-      case 'killEnemy':
+      case 'onEnemyChanged':
         Logger.log('SinglePlayerStrategy', 'killEnemy');
-        GameRoomSimulationManager.killEnemy();
+        GameRoomSimulation.killEnemy();
         break;
       default:
         Logger.warn('SinglePlayerStrategy.onHandleCommand', `unknown command ${command}`);
@@ -46,16 +45,18 @@ export class SinglePlayerStrategy extends IGamePlayStrategyBase {
     this.event.emit('onEndDrawCard');
   }
 
-  private onDataChanged(data: number) {}
+  private onEnemyChanged(datas: number[]) {
+    this.event.emit('onEnemyChanged', datas);
+  }
 
-  private onStartGame() {
-    GameRoomSimulationManager.event.on('onRoundStart', this.onRoundStart.bind(this));
-    GameRoomSimulationManager.event.on('onRoundEnd', this.onEndRound.bind(this));
-    GameRoomSimulationManager.event.on('onWaveStart', this.onWaveStart.bind(this));
-    GameRoomSimulationManager.event.on('onWaveEnd', this.onWaveEnd.bind(this));
-    GameRoomSimulationManager.event.on('startDrawCard', this.onDrawCard.bind(this));
-    GameRoomSimulationManager.event.on('endDrawCard', this.onEndDrawCard.bind(this));
-    GameRoomSimulationManager.event.on('enemyChanged', this.onDataChanged.bind(this));
-    GameRoomSimulationManager.start();
+  private execStartGame() {
+    GameRoomSimulation.on('onRoundStart', this.onRoundStart.bind(this));
+    GameRoomSimulation.on('onRoundEnd', this.onEndRound.bind(this));
+    GameRoomSimulation.on('onWaveStart', this.onWaveStart.bind(this));
+    GameRoomSimulation.on('onWaveEnd', this.onWaveEnd.bind(this));
+    GameRoomSimulation.on('startDrawCard', this.onDrawCard.bind(this));
+    GameRoomSimulation.on('endDrawCard', this.onEndDrawCard.bind(this));
+    GameRoomSimulation.on('enemyChanged', this.onEnemyChanged.bind(this));
+    GameRoomSimulation.start();
   }
 }

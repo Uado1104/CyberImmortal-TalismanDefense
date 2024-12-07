@@ -10,8 +10,7 @@ const gameStrategyEventDefine = {
   onWaveEnd: (wave: number) => {},
   onDrawCard: () => {},
   onEndDrawCard: () => {},
-  killEnemy: () => {},
-  onDataChanged: () => {},
+  onEnemyChanged: (ids: number[]) => {},
 };
 
 export type TStrategyDefine = typeof gameStrategyEventDefine;

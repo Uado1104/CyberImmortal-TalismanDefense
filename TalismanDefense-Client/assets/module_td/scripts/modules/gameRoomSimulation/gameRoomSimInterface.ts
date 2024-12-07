@@ -1,4 +1,4 @@
-export interface GameEnemySim {
+export interface IGameEnemy {
   /** 怪物Id */
   monsterId: number;
 
@@ -12,49 +12,44 @@ export interface GameEnemySim {
   genInterval: number;
 }
 
-export interface GameWaveSim {
-  /** 序号 */
-  index: number;
-
+export interface ISimGameWave {
   /** 怪物 */
-  enemies: GameEnemySim[];
+  enemies: IGameEnemy[];
 }
 
-export interface GameRoundSim {
-  /** 抽牌阶段 */
-  drawPhase: boolean;
-
-  /** 序号 */
-  index: number;
-
-  /** 当前波数 */
-  currentWave: number;
-
+export interface ISimGameRound {
   /** 怪物波数 */
-  waves: GameWaveSim[];
+  waves: ISimGameWave[];
 }
 
-export interface GameSessionSim {
+export interface ISimGameSession {
   /** 当前回合 */
   currentRound: number;
 
-  /** 回合数据 */
-  rounds: GameRoundSim[];
+  /** 当前波次 */
+  currentWave: number;
+
+  /** 是否为抽牌阶段 */
+  isDrawPhase: boolean;
+
+  /** 回合数据，这里是静态的gameRound配置，不会动态变换 */
+  rounds: ISimGameRound[];
 }
 
-export interface GamePlayerSim {
+export interface ISimGamePlayerInfo {
   /** 玩家Id */
-  playerId: number;
+  Id: number;
 
   /** 玩家等级 */
   level: number;
 
   /** 放置在场上的 */
-  heros: GameCardSim[];
+  placedCards: ISimGameCard[];
 
   /** 手牌 */
-  handCards: GameCardSim[];
+  handCards: ISimGameCard[];
 
+  /**  */
   buffs: number[];
 
   /** 金币 */
@@ -73,12 +68,35 @@ export interface GamePlayerSim {
   maxHp: number;
 }
 
-export interface GameCardSim {
+export interface ISimGameHero {
+  /** 唯一标识Id */
+  key: number;
+
+  /** 英雄Id */
+  card: number;
+
+  /** 英雄等级 */
+  level: number;
+
+  /** 当前生命值 */
+  hp: number;
+
+  /** 最大生命值 */
+  maxHp: number;
+
+  /** 技能id */
+  abilities: number[];
+
+  /** 攻击力 */
+  attack: number;
+}
+
+export interface ISimGameCard {
+  /** 唯一标识Id */
+  key: number;
+
   /** 卡牌Id */
   cardId: number;
-
-  /** 卡牌数量 */
-  count: number;
 
   /** 卡牌等级 */
   level: number;
@@ -87,32 +105,65 @@ export interface GameCardSim {
   drawed: boolean;
 }
 
-export interface GameRelicSim {
+export interface ISimGameRelic {
   /** 圣物Id */
   relicId: number;
 }
 
-export interface GameRoomSim {
+export interface ISimGameModel {
   /** 局内数据 */
-  session: GameSessionSim;
+  session: ISimGameSession;
 
   /** 玩家数据 */
-  players: GamePlayerSim[];
+  players: ISimGamePlayerInfo[];
 
   /** 牌池 */
-  cardPool: GameCardSim[];
+  cardPool: ISimGameCard[];
 
   /** 圣物池 */
-  relicPool: GameRelicSim[];
+  relicPool: ISimGameRelic[];
 }
 
-export function genDefaultGameRoomSim(): GameRoomSim {
+export function genSimGameRounds(roundCount: number, waveCount: number): ISimGameRound[] {
+  const rounds: ISimGameRound[] = [];
+  for (let i = 0; i < roundCount; i++) {
+    rounds.push({
+      waves: [],
+    });
+    for (let j = 0; j < waveCount; j++) {
+      const wave: ISimGameWave = {
+        enemies: [],
+      };
+      rounds[i].waves.push(wave);
+    }
+  }
+  return rounds;
+}
+
+export function genSimPlayerInfo(): ISimGamePlayerInfo {
+  return {
+    Id: 0,
+    level: 1,
+    placedCards: [],
+    handCards: [],
+    buffs: [],
+    gold: 0,
+    maxGold: 0,
+    roundGold: 0,
+    hp: 30,
+    maxHp: 0,
+  };
+}
+
+export function genDefaultSimGameModel(): ISimGameModel {
   return {
     session: {
-      currentRound: 0,
-      rounds: [],
+      currentWave: 1,
+      currentRound: 1,
+      isDrawPhase: false,
+      rounds: genSimGameRounds(3, 3),
     },
-    players: [],
+    players: [genSimPlayerInfo()],
     cardPool: [],
     relicPool: [],
   };

@@ -1,6 +1,7 @@
 import { GameControllerBase } from '../../../../Core/controller/gameController';
 import { Logger } from '../../../../Core/debugers/log';
 import { UIMgr } from '../../ui/uiMgr';
+import { GameModel } from '../model/gameModel';
 import { GameStrategyManager } from '../strategy/gameStrategy';
 import { GameRoundController } from './roundController';
 
@@ -16,7 +17,7 @@ export class GameSessionController extends GameControllerBase {
   }
 
   protected async onStart(): Promise<void> {
-    GameStrategyManager.event.on('onRoundStart', this.onRoundStart);
+    GameStrategyManager.event.on('onRoundStart', this.onRoundStart.bind(this));
     GameStrategyManager.event.on('onRoundEnd', this.onRoundEnd.bind(this));
     GameStrategyManager.event.on('onWaveStart', this.onWaveStart.bind(this));
     GameStrategyManager.event.on('onWaveEnd', this.onWaveEnd.bind(this));
@@ -44,13 +45,16 @@ export class GameSessionController extends GameControllerBase {
 
   private onRoundStart(round: number) {
     Logger.log('GameSessionController', `Round ${round} start`);
+    GameModel.data.currentRound = round;
   }
 
   private onRoundEnd() {
     Logger.log('GameSessionController', `Round end`);
   }
 
-  private onWaveStart() {
+  private onWaveStart(wave: number) {
+    GameModel.data.currentWave = wave;
+
     Logger.log('GameSessionController', `Wave start`);
   }
 
@@ -60,9 +64,11 @@ export class GameSessionController extends GameControllerBase {
 
   private onDrawCard() {
     Logger.log('GameSessionController', `Draw card`);
+    GameModel.data.isDrawPhase = true;
   }
 
   private onEndDrawCard() {
     Logger.log('GameSessionController', `End draw card`);
+    GameModel.data.isDrawPhase = false;
   }
 }

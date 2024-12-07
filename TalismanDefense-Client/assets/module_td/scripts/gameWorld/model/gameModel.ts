@@ -11,13 +11,17 @@ class CGameModel extends ObservableModel<IGameModel> {
 export class GameModel {
   static readonly gameWorldEntities = new ECSWorld(1000);
 
-  static data = new CGameModel();
+  private static myModel = new CGameModel();
 
   static addObserver(path: string, observer: ModelObserver): void {
-    this.data.addObserver(path, observer);
+    GameModel.myModel.addObserver(path, observer);
   }
 
   static removeObserver(path: string, observer: ModelObserver): void {
-    this.data.removeObserver(path, observer);
+    GameModel.myModel.removeObserver(path, observer);
+  }
+
+  static get data(): IGameModel {
+    return GameModel.myModel.proxy;
   }
 }

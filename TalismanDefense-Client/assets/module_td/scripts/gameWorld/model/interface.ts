@@ -1,4 +1,4 @@
-export interface IGameEnemy {
+export interface IGameMonster {
   /** 怪物Id */
   monsterId: number;
 
@@ -10,30 +10,6 @@ export interface IGameEnemy {
 
   /** 生成间隔，为0时全部一起生成 */
   genInterval: number;
-}
-
-export interface IGameWave {
-  /** 怪物 */
-  enemies: IGameEnemy[];
-}
-
-export interface IGameRound {
-  /** 怪物波数 */
-  waves: IGameWave[];
-}
-
-export interface IGameSession {
-  /** 当前回合 */
-  currentRound: number;
-
-  /** 当前波次 */
-  currentWave: number;
-
-  /** 是否为抽牌阶段 */
-  isDrawPhase: boolean;
-
-  /** 回合数据，这里是静态的gameRound配置，不会动态变换 */
-  rounds: IGameRound[];
 }
 
 export interface IGamePlayerInfo {
@@ -112,32 +88,19 @@ export interface IGameRelic {
 
 export interface IGameModel {
   /** 局内数据 */
-  session: IGameSession;
+  currentRound: number;
+
+  /** 当前波次 */
+  currentWave: number;
+
+  /** 是否为抽牌阶段 */
+  isDrawPhase: boolean;
 
   /** 玩家数据 */
   player: IGamePlayerInfo;
 
   /** 牌池 */
-  cardPool: IGameCard[];
-
-  /** 圣物池 */
-  relicPool: IGameRelic[];
-}
-
-export function genSimGameRounds(roundCount: number, waveCount: number): IGameRound[] {
-  const rounds: IGameRound[] = [];
-  for (let i = 0; i < roundCount; i++) {
-    rounds.push({
-      waves: [],
-    });
-    for (let j = 0; j < waveCount; j++) {
-      const wave: IGameWave = {
-        enemies: [],
-      };
-      rounds[i].waves.push(wave);
-    }
-  }
-  return rounds;
+  monsters: number[];
 }
 
 export function genSimPlayerInfo(): IGamePlayerInfo {
@@ -157,14 +120,10 @@ export function genSimPlayerInfo(): IGamePlayerInfo {
 
 export function genDefaultGameModel(): IGameModel {
   return {
-    session: {
-      currentWave: 1,
-      currentRound: 1,
-      isDrawPhase: false,
-      rounds: genSimGameRounds(3, 3),
-    },
+    currentWave: 1,
+    currentRound: 1,
+    isDrawPhase: false,
     player: genSimPlayerInfo(),
-    cardPool: [],
-    relicPool: [],
+    monsters: [],
   };
 }

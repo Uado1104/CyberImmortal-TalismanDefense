@@ -15,6 +15,7 @@ export class GamePlayStateManager {
     GameStrategyManager.event.on('onRoundEnd', GamePlayStateManager.onRoundDataChange);
     GameStrategyManager.event.on('onWaveStart', GamePlayStateManager.onWaveDataChange);
     GameStrategyManager.event.on('onWaveEnd', GamePlayStateManager.onWaveDataChange);
+    GameStrategyManager.event.on('onEnemyChanged', GamePlayStateManager.onEnemyChanged);
   }
 
   static stop() {
@@ -22,13 +23,18 @@ export class GamePlayStateManager {
     GameStrategyManager.event.remove('onRoundEnd', GamePlayStateManager.onRoundDataChange);
     GameStrategyManager.event.remove('onWaveStart', GamePlayStateManager.onWaveDataChange);
     GameStrategyManager.event.remove('onWaveEnd', GamePlayStateManager.onWaveDataChange);
+    GameStrategyManager.event.remove('onEnemyChanged', GamePlayStateManager.onEnemyChanged);
   }
 
   private static onRoundDataChange(round: number) {
-    GameModel.data.proxy.CurrentRound = round;
+    GameModel.data.currentRound = round;
   }
 
   private static onWaveDataChange(wave: number) {
-    GameModel.data.proxy.CurrentWave = wave;
+    GameModel.data.currentWave = wave;
+  }
+
+  private static onEnemyChanged(ids: number[]) {
+    GameModel.data.monsters = ids;
   }
 }
