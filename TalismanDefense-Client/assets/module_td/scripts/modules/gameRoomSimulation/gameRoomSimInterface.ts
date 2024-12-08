@@ -4,12 +4,6 @@ export interface IGameEnemy {
 
   /** 怪物生成时的在地图上id */
   createIdOnMap: number;
-
-  /** 怪物数量 */
-  count: number;
-
-  /** 生成间隔，为0时全部一起生成 */
-  genInterval: number;
 }
 
 export interface ISimGameWave {
@@ -124,17 +118,29 @@ export interface ISimGameModel {
   relicPool: ISimGameRelic[];
 }
 
+export function genEnemies(count = 3): IGameEnemy[] {
+  const enemies: IGameEnemy[] = [];
+  for (let i = 0; i < count; i++) {
+    enemies.push({
+      monsterId: i,
+      createIdOnMap: i,
+    });
+  }
+  return enemies;
+}
+
 export function genSimGameRounds(roundCount: number, waveCount: number): ISimGameRound[] {
   const rounds: ISimGameRound[] = [];
   for (let i = 0; i < roundCount; i++) {
-    rounds.push({
+    const round: ISimGameRound = {
       waves: [],
-    });
+    };
+    rounds.push(round);
     for (let j = 0; j < waveCount; j++) {
       const wave: ISimGameWave = {
-        enemies: [],
+        enemies: genEnemies(),
       };
-      rounds[i].waves.push(wave);
+      round.waves.push(wave);
     }
   }
   return rounds;
@@ -160,7 +166,7 @@ export function genDefaultSimGameModel(): ISimGameModel {
     session: {
       currentWave: 1,
       currentRound: 1,
-      isDrawPhase: false,
+      isDrawPhase: true,
       rounds: genSimGameRounds(3, 3),
     },
     players: [genSimPlayerInfo()],

@@ -20,6 +20,8 @@ const gameRoomSimulatioEventDefine = {
 class GameRoomSimulationManager extends EventDispatcher<typeof gameRoomSimulatioEventDefine> {
   private model = new GameRoomSimModel();
 
+  private isRunning = false;
+
   start() {
     Logger.log('GameRoomSimulationManager', 'start');
     // 将玩家数据以及回合数据传入，开启tick
@@ -50,13 +52,8 @@ class GameRoomSimulationManager extends EventDispatcher<typeof gameRoomSimulatio
     // 清理所有数据
   }
 
-  private isRunning = false;
-
-  private isBattle = false;
-
   startSession() {
     // 开始回合
-    this.isBattle = false;
     this.model.data.session.currentRound = 1;
     this.moveToNextRound();
   }
@@ -67,8 +64,7 @@ class GameRoomSimulationManager extends EventDispatcher<typeof gameRoomSimulatio
         return;
       }
 
-      // 模拟游戏逻辑
-      if (!this.isBattle) {
+      if (this.model.data.session.isDrawPhase) {
         return;
       }
 
@@ -76,7 +72,10 @@ class GameRoomSimulationManager extends EventDispatcher<typeof gameRoomSimulatio
         return;
       }
 
-      this.isBattle = false;
+      if (!this.model.isWaveEnd) {
+        return;
+      }
+
       this.emit('onRoundEnd', this.model.data.session.currentRound);
       this.moveToNextRound();
     },
@@ -100,22 +99,21 @@ class GameRoomSimulationManager extends EventDispatcher<typeof gameRoomSimulatio
 
   moveToNextRound() {
     // 移动到下一回合
-    this.isBattle = false;
 
     if (this.model.isRoundEnd) {
-      this.isRunning = false;
       this.emit('sessionOver');
       return;
     }
+
     this.model.moveToNextRound();
-    Logger.log('GameRoomSimulationManager', `Round ${this.model.data.session.currentRound} start`);
     this.emit('onRoundStart', this.model.data.session.currentRound);
     this.emit('startDrawCard');
+    Logger.log('GameRoomSimulationManager', `Round ${this.model.data.session.currentRound} start`);
 
     registerTimeoutTicker(() => {
+      this.model.data.session.isDrawPhase = false;
       this.emit('endDrawCard');
       this.moveToNextWave();
-      this.isBattle = true;
     }, 2);
   }
 }

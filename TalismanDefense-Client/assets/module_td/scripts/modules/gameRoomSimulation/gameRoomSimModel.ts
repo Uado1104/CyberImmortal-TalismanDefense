@@ -48,6 +48,7 @@ export class GameRoomSimModel {
   moveToNextRound() {
     this.data.session.currentRound++;
     this.data.session.currentWave = 1;
+    this.data.session.isDrawPhase = true;
   }
 
   get round() {
